@@ -5,7 +5,7 @@ GMSL相机接入套件驱动
 # 重要提示
 1. 本仓库提供面线Jetson Orin开发套件的GMSL相机接入驱动.  
 2. 本驱动文件仅对艾利光摄像头模组有效.  
-3. 本驱动仅适配Orin内核版本JetPack5.02.  
+3. 本驱动仅适配Orin内核版本JetPack5.02 (内核 R35.5).  
 4. 需要对PINMUX进行更新以适配艾利光模组.  
 
 # 前置条件
@@ -35,10 +35,8 @@ GMSL相机接入套件驱动
 ![hardware setup(top)](./docs/images/image-5.png)
 
 # 驱动文件
-驱动文件包含pinmux和bsp_out. 用户需要将这些文件拷贝到 Jetson Orin 系统.  
+驱动文件包含bsp_out. 用户需要将这些文件拷贝到 Jetson Orin 系统.  
 ![driver documents](./docs/images/image-6.png)
-## pinmux
-Pinmux内容为使用艾利光套件时所需要的引脚复用输出的设备树文件。请参考<<刷机手册>>进行Pinmux烧写。  
 ## bsp_out
 Bsp_out内容主要为编译完成的驱动、内核等文件，可以直接在NVIDIA_AGX_ORIN。  
 
