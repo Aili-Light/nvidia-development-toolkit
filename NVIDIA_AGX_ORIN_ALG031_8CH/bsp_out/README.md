@@ -1,103 +1,98 @@
-# 驱动安装说明
+# Driver Installation
+[中文](./README_CN.md)
 
-## 1 前提
+## 1 Prerequisites
 
-本驱动适用于nvidia官方的 jeston agx orin 平台，
+This driver is ONLY works for Jetson Orin Development Kit with kernel R35.5
 
-基于官方R35.5的内核源码上编译生成。
+## 2 Driver files
 
-
-## 2 文件介绍
-
-此驱动主要提供如下的文件：
+Overview of driver files
 
 ``` bash
 ├── boot
-│   ├── Image                                           # 内核镜像
+│   ├── Image                                           # kernel image
 │   ├── dtb
-│   │   └── kernel_tegra234-p3701-0004-p3737-0000.dtb   # 设备树
+│   │   └── kernel_tegra234-p3701-0004-p3737-0000.dtb   # device tress
 │   └── extlinux
-│       └── extlinux.conf                               # 启动配置文件
-├── README.md                                           # 使用说明
+│       └── extlinux.conf                               # boot configuration
+├── README.md                                           # readme
 └── driver
-    ├── install_ko.sh                                   # 驱动安装脚本
-    ├── max9296_96717.ko                                # 解串器驱动
-    ├── max96717.ko                                     # 串行器驱动
-    ├── nv_alg031.ko                                    # 摄像头驱动
-    └── preview.sh                                      # 8通道预览脚本
+    ├── install_ko.sh                                   # script for driver installation 
+    ├── max9296_96717.ko                                # driver for deserdes
+    ├── max96717.ko                                     # driver for serdes
+    ├── nv_alg031.ko                                    # driver for image sensor
+    └── preview.sh                                      # script for preview
 ```
 
+## 3 Update device tree
 
-## 3 更新设备树
+The driver must work with correct device tree. We have to update the device tree.  
 
-驱动需要和设备树一起使用，所以需要先更细设备树。
+### 3.1 Backup the old device tree
 
-### 3.1 备份旧的设备树
+Check the location(/boot/dtb) to verify if the device tree file (kernel_tegra234-p3701-0004-p3737-0000.dtb) exists.  
 
-首先查看 /boot/dtb下是否存在kernel_tegra234-p3701-0004-p3737-0000.dtb
-
-如果存在,备份这个设备树
+If exists, backup the file:  
 
 ` sudo cp /boot/dtb/kernel_tegra234-p3701-0005-p3737-0000.dtb /boot/dtb/kernel_tegra234-p3701-0005-p3737-0000_backup.dtb  `
 
-如果不存在，备份/boot 文件夹下的设备树
+If not exists，backup device tree in /boot:  
 
 ` sudo cp /boot/tegra234-p3701-0005-p3737-0000.dtb /boot/dtb/kernel_tegra234-p3701-0005-p3737-0000_backup.dtb  `
 
-### 3.2 修改启动配置
+### 3.2 Modify the boot configuration
 
-备份配置文件/boot/extlinux/extlinux.conf
+Backup config file : /boot/extlinux/extlinux.conf  
 
 ` sudo cp /boot/extlinux/extlinux.conf /boot/extlinux/extlinux.conf.backup `
 
-使用此文件夹中的配置文件，更新jeston agx orin中的配置文件
+Update configuration file on the jeston agx orin   
 
 ` sudo cp bsp_out/boot/extlinux/extlinux.conf  /boot/extlinux/extlinux.conf `
 
-### 3.3 修改设备树
+### 3.3 Change the device tree
 
-使用此文件夹中的设备树，更新jeston agx orin中的设备树：
+Update the device tree file on the jeston agx orin：
 
 ` sudo cp bsp_out/boot/dtb/kernel_tegra234-p3701-0005-p3737-0000.dtb /boot/dtb/kernel_tegra234-p3701-0005-p3737-0000.dtb `
 
-### 3.4 验证设备树更新成功
+### 3.4 Reboot and verify
 
-重新启动一下系统，让uefi加载配置/boot/extlinux/extlinux.conf，让系统加载新的设备树。
+Reboot. The system will use the UEFI to load /boot/extlinux/extlinux.conf and automatically update the device tree.   
 
-系统启动之后，可以通过如下命令查看一下摄像头节点是否存在，
+After reboot, check if the device is loaded correcly.  
 
 ` ls /proc/device-tree/i2c@3180000/tca9543@72/i2c@0/ `
 
-如果可以看到`alg031_a@1b`、`alg031_b@1c`、`max9296_96717@48`、`max96717_a@42`、` max96717_b@44`、`max96717_prim@40`这些节点，表示设备树加载正常，否则设备树更新失败。
+If we see words like `alg031_a@1b`、`alg031_b@1c`、`max9296_96717@48`、`max96717_a@42`、` max96717_b@44`、`max96717_prim@40`, it means that device tree is loaded sucessfully.  
 
+## 4 Load driver
 
-## 4 加载驱动
+### 4.1 Load driver
 
-### 4.1 加载驱动
+Copy ` bsp_out/driver ` to the jeston agx orin.  
 
-将` bsp_out/driver `文件夹的文件驱动拷贝到jeston agx orin中
-
-
-增加执行权限
+Add permission to execute.   
 
 ` sudo chmod +x install_ko.sh `
 
-加载驱动
+Load driver.  
 
 ` sudo ./install_ko.sh `
 
-这里如果加载成功的话，可以在看到video设备：/dev/video*
+If driver is loaded, we can see video devices on the position : /dev/video*
 
-比如接了4 个alg031个摄像头,可以看到：
+For example, if we have 4X3MP camera, we can see that:  
 
 ``` bash
 $ ls /dev/video*
 /dev/video0  /dev/video1  /dev/video2  /dev/video3
 ```
 
-### 4.2 预览
+### 4.2 Preview
 
-可以使用如下指令预览视频，device后的参数是video的设备节点
+Use the command to preview image.  
 
 ` gst-launch-1.0 v4l2src device=/dev/video0 ! 'video/x-raw,format=UYVY,width=1920,height=1536' ! videoconvert ! fpsdisplaysink video-sink=xvimagesink sync=false
  `

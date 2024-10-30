@@ -49,30 +49,12 @@ Bsp_out内容主要为编译完成的驱动、内核等文件，可以直接在N
 nvidia@nvidia-desktop:~$ sudo apt install v4l2loopback-utils v4l-utils vlc gstreamer1.0-tools gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-x
 ```
 
-# 加载驱动
-## 确保驱动文件可执行
-```bash
-chmod +x upgrade.sh install_ko.sh
-```
-## 运行升级脚本
-```bash
-./upgrade.sh
-```
-## 重启Orin
-![upgrade orin](./docs/images/image-7.png)
-## 重启后加载驱动
-```bash
-./install_ko.sh
-```
-# 预览图像
-cam0:
-```bash
-gst-launch-1.0 v4l2src device=/dev/video0 ! 'video/x-raw,format=UYVY,width=1920,height=1536' ! videoconvert ! fpsdisplaysink video-sink=xvimagesink sync=false
-```
-cam1: 
-```bash
-gst-launch-1.0 v4l2src device=/dev/video1 ! 'video/x-raw,format=UYVY,width=1920,height=1536' ! videoconvert ! fpsdisplaysink video-sink=xvimagesink sync=false
-```
+# 加载驱动 & 预览图像
+[ALG08B-4CH](./NVIDIA_AGX_ORIN_ALG08B_4CH/bsp_out/README_CN.md)
+[ALG031-8CH](./NVIDIA_AGX_ORIN_ALG031_8CH/bsp_out/README_CN.md)
+[ALG019-8CH](./NVIDIA_AGX_ORIN_ALG019_8CH/bsp_out/README_CN.md)
+[ALG08B-3CH+ALG031-2CH](./NVIDIA_AGX_ORIN_ALG08B_3CH_ALG031_2CH/bsp_out/README_CN.md)
+
 ![preview](./docs/images/image-8.png)
 # 备注
 1. 相机驱动不支持热插拔，用户需要将相机提前介入到系统.  

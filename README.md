@@ -6,7 +6,7 @@ This repository provides GMSL camera driver for the NVIDIA Jetson platform. The 
 # Important Note
 1. This repository provides GMSL camera driver for Jetson Orin Development Kit.  
 2. This driver is developped for ALG GMSL camera module only.  
-3. This driver is compatible only with JetPack5.02.  
+3. This driver is compatible only with JetPack5.02 (Kernel R35.5).  
 4. PINMUX update is required to connect ALG camera module.  
 
 # Prerequisites
@@ -36,10 +36,8 @@ This repository provides GMSL camera driver for the NVIDIA Jetson platform. The 
 ![hardware setup(top)](./docs/images/image-5.png)
 
 # Driver file
-The driver file package includes pinmux/bsp_out. User should copy those files to the Jetson Orin system.  
-![driver documents](./docs/images/image-6.png)
-## pinmux
-Pinmus is used for device tree pin remapping while using the ALG camera modules. Please refer to "flashing guide" for more information.  
+The driver file package includes bsp_out. User should copy those files to the Jetson Orin system.  
+![driver documents](./docs/images/image-6.png) 
 ## bsp_out
 bsp_out includes the compiled kernel driver file to be loaded on Jeston Orin system.  
 
@@ -50,37 +48,16 @@ Follow this instruction to setup environment on Jetson Orin system.
 nvidia@nvidia-desktop:~$ sudo apt install v4l2loopback-utils v4l-utils vlc gstreamer1.0-tools gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-x
 ```
 
-# Load driver
-## Make the bash script executable
-```bash
-chmod +x upgrade.sh install_ko.sh
-```
-## Run update script
-```bash
-./upgrade.sh
-```
-## Reboot Orin to finsh
-![upgrade orin](./docs/images/image-7.png)
-## Load driver after reboot
-```bash
-./install_ko.sh
-```
-
-# Preview images
-cam0:
-```bash
-gst-launch-1.0 v4l2src device=/dev/video0 ! 'video/x-raw,format=UYVY,width=1920,height=1536' ! videoconvert ! fpsdisplaysink video-sink=xvimagesink sync=false
-```
-cam1: 
-```bash
-gst-launch-1.0 v4l2src device=/dev/video1 ! 'video/x-raw,format=UYVY,width=1920,height=1536' ! videoconvert ! fpsdisplaysink video-sink=xvimagesink sync=false
-```
-...
+# Load driver & Preview images
+[ALG08B-4CH](./NVIDIA_AGX_ORIN_ALG08B_4CH/bsp_out/README.md)
+[ALG031-8CH](./NVIDIA_AGX_ORIN_ALG031_8CH/bsp_out/README.md)
+[ALG019-8CH](./NVIDIA_AGX_ORIN_ALG019_8CH/bsp_out/README.md)
+[ALG08B-3CH+ALG031-2CH](./NVIDIA_AGX_ORIN_ALG08B_3CH_ALG031_2CH/bsp_out/README.md)
 
 ![preview](./docs/images/image-8.png)
 # Note
 1. The camera driver is not hot-pluggable. User must connect the camera correctly before system power on.  
-2. Jetson Orin will load camera drivers automatically on boot. To verify the driver is loaded on the system please use : 
+2. Jetson Orin will load camera drivers automatically on boot. To verify if the driver is loaded on the system please use : 
 ```bash
 ls | grep /dev/video* 
 ```
