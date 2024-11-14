@@ -53,6 +53,8 @@ nvidia@nvidia-desktop:~$ sudo apt install v4l2loopback-utils v4l-utils vlc gstre
 [ALG031-8CH](./NVIDIA_AGX_ORIN_ALG031_8CH/bsp_out/README.md)
 [ALG019-8CH](./NVIDIA_AGX_ORIN_ALG019_8CH/bsp_out/README.md)
 [ALG08B-3CH+ALG031-2CH](./NVIDIA_AGX_ORIN_ALG08B_3CH_ALG031_2CH/bsp_out/README.md)
+[ALG031-4CH-Orin-Nano-2X2lane](./NVIDIA_ORIN_NANO_ALG031_CAM0_CAM1_2LANE/)
+[ALG031-4CH-Orin-Nano-1X4lane](./NVIDIA_ORIN_NANO_ALG031_CAM1_4LANE/)
 
 ![preview](./docs/images/image-8.png)
 # Note

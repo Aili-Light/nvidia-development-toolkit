@@ -65,7 +65,7 @@ After reboot, check if the device is loaded correcly.
 ` ls  /proc/device-tree/cam_i2cmux/i2c@0/ `
 
 See if the following address appear:  
-`alg031_a@1b`、`alg031_b@1c`、`max9296_96717@48`、`max96717_a@42`、` max96717_b@44`、`max96717_prim@40`
+`alg031_a@1b`、`alg031_b@1c`、`max9296_96717@48`、`max96717_a@42`、` max96717_b@44`、`max96717_prim@40`  
 It means that device tree is loaded sucessfully.  
 
 ## 4 Load driver

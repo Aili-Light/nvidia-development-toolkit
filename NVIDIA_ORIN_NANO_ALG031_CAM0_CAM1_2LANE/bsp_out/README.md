@@ -68,9 +68,9 @@ After reboot, check if the device is loaded correcly.
 ` ls  /proc/device-tree/cam_i2cmux/i2c@0/ `
 
 See if the following address appear(sensor addr is 0x80)    
-`alg031_a@1b`、`alg031_b@1c`、`max9296_96717@48`、`max96717_a@42`、` max96717_b@44`、`max96717_prim@40`
+`alg031_a@1b`、`alg031_b@1c`、`max9296_96717@48`、`max96717_a@42`、` max96717_b@44`、`max96717_prim@40`  
 See if the following address appear(sensor addr is 0x84)  
-`alg031_a@1b`、`alg031_b@1c`、`max9296_96717@48`、`max96717_a@40`、` max96717_b@44`、`max96717_prim@42`
+`alg031_a@1b`、`alg031_b@1c`、`max9296_96717@48`、`max96717_a@40`、` max96717_b@44`、`max96717_prim@42`  
 It means that device tree is loaded sucessfully.  
 
 ## 4 Load driver
