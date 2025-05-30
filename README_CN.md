@@ -30,11 +30,11 @@
 
 ## Jetson Orin转接套件说明
 1. 主板  
-![main board front](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/images/image-1.png)
-![main board back](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/images/image-2.png)
+![main board front](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-1.png)
+![main board back](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-2.png)
 
 2. 子板  
-![sub board](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/images/image.png)
+![sub board](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image.png)
 ## 安装说明
 1. 将主板反扣在Jetson Orin背面的连接器上。  
 2. 将主板和子板通过两条FPC软排线连接。  
@@ -42,8 +42,8 @@
 4. 将相机接入到子板的Fakra接口（每个子板最多4通道）。  
 
 ## 整体硬件设置图示 
-![hardware setup(back)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/images/image-4.png)
-![hardware setup(top)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/images/image-5.png)
+![hardware setup(back)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-4.png)
+![hardware setup(top)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-5.png)
 
 ## 驱动框架
 驱动框架详细信息，请查阅页面[Driver](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/README_CN.md).

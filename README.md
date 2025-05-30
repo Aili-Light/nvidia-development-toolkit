@@ -32,11 +32,11 @@ Verify the information by using `jtop` command on your device.
 
 ## Introduction to the Jetson ORIN Adapter Board
 1. Main board  
-![main board front](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/images/image-1.png)
-![main board back](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/images/image-2.png)
+![main board front](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-1.png)
+![main board back](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-2.png)
 
 2. Sub board  
-![sub board](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/images/image.png)
+![sub board](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image.png)
 
 ## Setup instruction
 1. Stackup main board on the connector at the back side of Jetson Orin.  
@@ -45,8 +45,8 @@ Verify the information by using `jtop` command on your device.
 4. Connect GMSL cameras to the Fakra connector on sub board (maximum 4-CH per board).  
 
 ## Hardware setup as displayed in thefollowing image  
-![hardware setup(back)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/images/image-4.png)
-![hardware setup(top)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/images/image-5.png)
+![hardware setup(back)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-4.png)
+![hardware setup(top)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-5.png)
 
 ## Camera Driver
 Please refer to [Driver](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/README.md) for specific descriptions.
