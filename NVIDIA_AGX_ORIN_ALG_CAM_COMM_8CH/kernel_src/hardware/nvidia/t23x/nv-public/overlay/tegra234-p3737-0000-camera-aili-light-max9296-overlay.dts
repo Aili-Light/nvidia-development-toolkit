@@ -1,0 +1,1247 @@
+// SPDX-License-Identifier: GPL-2.0-only
+// SPDX-FileCopyrightText: Copyright (c) 2018-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+/dts-v1/;
+/plugin/;
+
+
+// #include <dt-bindings/clock/tegra234-clock.h>
+#include <dt-bindings/gpio/tegra234-gpio.h>
+#include <dt-bindings/tegra234-p3737-0000+p3701-0000.h>
+#include <dt-bindings/pinctrl/pinctrl-tegra.h>
+
+#define CAMERA_I2C_MUX_BUS(x) (0x1E + x)
+
+#define CAM0_RST_L	TEGRA234_MAIN_GPIO(H, 3)
+#define CAM0_PWDN	TEGRA234_MAIN_GPIO(H, 6)
+#define CAM1_RST_L	TEGRA234_MAIN_GPIO(AC, 1)
+#define CAM1_PWDN	TEGRA234_MAIN_GPIO(AC, 0)
+
+#define CAM2_RST_L	TEGRA234_AON_GPIO(CC, 2)
+#define CAM2_PWDN	TEGRA234_AON_GPIO(CC, 0)
+#define CAM3_RST_L	TEGRA234_AON_GPIO(CC, 3)
+#define CAM3_PWDN	TEGRA234_AON_GPIO(CC, 1)
+
+
+#define TRIG_EXTERN		TEGRA234_MAIN_GPIO(AC, 7)
+#define DES0_TRIG1		TEGRA234_AON_GPIO(BB, 2)
+#define DES0_TRIG2		TEGRA234_MAIN_GPIO(AC, 3)
+#define DES1_TRIG1		TEGRA234_AON_GPIO(AA, 7)
+#define DES1_TRIG2		TEGRA234_MAIN_GPIO(H, 1)
+#define DES2_TRIG1		TEGRA234_AON_GPIO(AA, 4)
+#define DES2_TRIG2		TEGRA234_MAIN_GPIO(AC, 4)
+#define DES3_TRIG1		TEGRA234_MAIN_GPIO(AC, 2)
+#define DES3_TRIG2		TEGRA234_MAIN_GPIO(H, 5)
+
+#define PPS_IN			TEGRA234_AON_GPIO(BB, 0)
+
+// #include "aili-light/tegra234-eac5000-aili-light-camera-modules.dtsi"
+
+/* camera control gpio definitions */
+/ {
+	overlay-name = "AGX ORIN Aili-Light MAX9296A Device Tree Overlay";
+	jetson-header-name = "Jetson AGX CSI Connector";
+	compatible = JETSON_COMPATIBLE;
+	
+	fragment@0 {
+		target-path = "/";
+		
+		__overlay__ {
+			tegra-capture-vi {
+				status = "okay";
+				num-channels = <8>;
+				ports {
+					status = "okay";
+					port@0 {
+						reg = <0>;
+						status = "okay";
+						gmslcomm_vi_in0: endpoint  {
+							status = "okay";
+							vc-id = <1>;
+							port-index = <0>;
+							bus-width = <4>;
+							remote-endpoint = <&gmslcomm_csi_out0>;
+						};
+					};
+					port@1 {
+						reg = <1>;
+						status = "okay";
+						gmslcomm_vi_in1: endpoint {
+							status = "okay";
+							vc-id = <0>;
+							port-index = <0>;
+							bus-width = <4>;
+							remote-endpoint = <&gmslcomm_csi_out1>;
+						};
+					};
+					port@2 {
+						reg = <2>;
+						status = "okay";
+						gmslcomm_vi_in2: endpoint  {
+							status = "okay";
+							vc-id = <1>;
+							port-index = <2>;
+							bus-width = <4>;
+							remote-endpoint = <&gmslcomm_csi_out2>;
+						};
+					};
+					port@3 {
+						reg = <3>;
+						status = "okay";
+						gmslcomm_vi_in3: endpoint {
+							status = "okay";
+							vc-id = <0>;
+							port-index = <2>;
+							bus-width = <4>;
+							remote-endpoint = <&gmslcomm_csi_out3>;
+						};
+					};
+					port@4 {
+						reg = <4>;
+						status = "okay";
+						gmslcomm_vi_in4: endpoint  {
+							status = "okay";
+							vc-id = <1>;
+							port-index = <4>;
+							bus-width = <4>;
+							remote-endpoint = <&gmslcomm_csi_out4>;
+						};
+					};
+					port@5 {
+						reg = <5>;
+						status = "okay";
+						gmslcomm_vi_in5: endpoint {
+							status = "okay";
+							vc-id = <0>;
+							port-index = <4>;
+							bus-width = <4>;
+							remote-endpoint = <&gmslcomm_csi_out5>;
+						};
+					};
+					port@6 {
+						reg = <6>;
+						status = "okay";
+						gmslcomm_vi_in6: endpoint  {
+							status = "okay";
+							vc-id = <1>;
+							port-index = <5>;
+							bus-width = <4>;
+							remote-endpoint = <&gmslcomm_csi_out6>;
+						};
+					};
+					port@7 {
+						reg = <7>;
+						status = "okay";
+						gmslcomm_vi_in7: endpoint {
+							status = "okay";
+							vc-id = <0>;
+							port-index = <5>;
+							bus-width = <4>;
+							remote-endpoint = <&gmslcomm_csi_out7>;
+						};
+					};
+				};
+			};
+
+			bus@0{
+
+				gpio@2200000 {
+					camera-control-output-low {
+						output-low;
+						gpios = <CAM0_RST_L 0 CAM0_PWDN 0
+						CAM1_RST_L 0 CAM1_PWDN 0>;
+						label = "cam0-rst", "cam0-pwdn",
+						"cam1-rst", "cam1-pwdn";
+					};
+					trigger-extern-input{
+						input;
+						gpios = <TRIG_EXTERN 0 PPS_IN 0>;
+						label = "trigger-extern","pps-in";
+						status = "okay";
+					};
+					trigger-output-low {
+						output-low;
+						gpios = < DES0_TRIG2 0 DES1_TRIG2 0 DES2_TRIG2 0
+						DES3_TRIG1 0 DES3_TRIG2 0>;
+						label = "des0-trig2","des1-trig2","des2-trig2",
+						"des3-trig1", "des3-trig2";
+						status = "okay";
+					};
+				};
+				gpio@c2f0000 {
+					camera-control-output-low {
+						output-low;
+						gpios = <CAM2_RST_L 0 CAM2_PWDN 0
+						CAM3_RST_L 0 CAM3_PWDN 0>;
+						label = "cam2-rst", "cam2-pwdn",
+						"cam3-rst", "cam3-pwdn";
+					};
+					trigger-output-low {
+						output-low;
+						gpios = <DES0_TRIG1 0 DES1_TRIG1 0  DES2_TRIG1 0>;
+						label = "des0-trig1", "des1-trig1", "des2-trig1";
+						status = "okay";
+					};
+				};
+
+				aili_trigger: aili_trigger {
+					compatible = "aili-light,trigger";
+
+					extern-gpio = <&gpio TRIG_EXTERN GPIO_ACTIVE_LOW>;
+					pps-gpio = <&gpio_aon PPS_IN GPIO_ACTIVE_LOW>;
+					triggerout-gpios = <&gpio_aon   DES0_TRIG1 GPIO_ACTIVE_LOW>,
+									<&gpio  		DES0_TRIG2 GPIO_ACTIVE_LOW>,
+									<&gpio_aon   	DES1_TRIG1 GPIO_ACTIVE_LOW>,
+									<&gpio  		DES1_TRIG2 GPIO_ACTIVE_LOW>,
+									<&gpio_aon   	DES2_TRIG1 GPIO_ACTIVE_LOW>,
+									<&gpio  		DES2_TRIG2 GPIO_ACTIVE_LOW>,
+									<&gpio  		DES3_TRIG1 GPIO_ACTIVE_LOW>,
+									<&gpio  		DES3_TRIG2 GPIO_ACTIVE_LOW>;
+					status = "okay";
+				};
+
+				host1x@13e00000 {
+					nvcsi@15a00000 {
+						num-channels = <8>;
+						channel@0 {
+							status = "okay";
+							reg = <0>;
+							ports {
+								status = "okay";
+								port@0 {
+									reg = <0>;
+									status = "okay";
+									gmslcomm_csi_in0: endpoint@0 {
+										status = "okay";
+										port-index = <0>;
+										bus-width = <4>;
+										remote-endpoint = <&gmslcomm_des_out0>;
+									};
+								};
+								port@1 {
+									reg = <1>;
+									status = "okay";
+									gmslcomm_csi_out0: endpoint@1 {
+										status = "okay";
+										remote-endpoint = <&gmslcomm_vi_in0>;
+									};
+								};
+							};
+						};
+						channel@1 {
+							reg = <1>;
+							status = "okay";
+							ports {
+								status = "okay";
+								port@0 {
+									reg = <0>;
+									status = "okay";
+									gmslcomm_csi_in1: endpoint@2 {
+										status = "okay";
+										port-index = <0>;
+										bus-width = <4>;
+										remote-endpoint = <&gmslcomm_des_out1>;
+									};
+								};
+								port@1 {
+									reg = <1>;
+									status = "okay";
+									gmslcomm_csi_out1: endpoint@3 {
+										status = "okay";
+										remote-endpoint = <&gmslcomm_vi_in1>;
+									};
+								};
+							};
+						};
+						channel@2 {
+							reg = <2>;
+							status = "okay";
+							ports {
+								status = "okay";
+								port@0 {
+									reg = <0>;
+									status = "okay";
+									gmslcomm_csi_in2: endpoint@4 {
+										status = "okay";
+										port-index = <2>;
+										bus-width = <4>;
+										remote-endpoint = <&gmslcomm_des_out2>;
+									};
+								};
+								port@1 {
+									reg = <1>;
+									status = "okay";
+									gmslcomm_csi_out2: endpoint@5 {
+										status = "okay";
+										remote-endpoint = <&gmslcomm_vi_in2>;
+									};
+								};
+							};
+						};
+						channel@3 {
+							reg = <3>;
+							status = "okay";
+							ports {
+								status = "okay";
+								port@0 {
+									reg = <0>;
+									status = "okay";
+									gmslcomm_csi_in3: endpoint@6 {
+										status = "okay";
+										port-index = <2>;
+										bus-width = <4>;
+										remote-endpoint = <&gmslcomm_des_out3>;
+									};
+								};
+								port@1 {
+									reg = <1>;
+									status = "okay";
+									gmslcomm_csi_out3: endpoint@7 {
+										status = "okay";
+										remote-endpoint = <&gmslcomm_vi_in3>;
+									};
+								};
+							};
+						};
+						channel@4 {
+							reg = <4>;
+							status = "okay";
+							ports {
+								status = "okay";
+								port@0 {
+									reg = <0>;
+									status = "okay";
+									gmslcomm_csi_in4: endpoint@8 {
+										status = "okay";
+										port-index = <4>;
+										bus-width = <4>;
+										remote-endpoint = <&gmslcomm_des_out4>;
+									};
+								};
+								port@1 {
+									reg = <1>;
+									status = "okay";
+									gmslcomm_csi_out4: endpoint@9 {
+										status = "okay";
+										remote-endpoint = <&gmslcomm_vi_in4>;
+									};
+								};
+							};
+						};
+						channel@5 {
+							reg = <5>;
+							status = "okay";
+							ports {
+								status = "okay";
+								port@0 {
+									reg = <0>;
+									status = "okay";
+									gmslcomm_csi_in5: endpoint@10 {
+										status = "okay";
+										port-index = <4>;
+										bus-width = <4>;
+										remote-endpoint = <&gmslcomm_des_out5>;
+									};
+								};
+								port@1 {
+									reg = <1>;
+									status = "okay";
+									gmslcomm_csi_out5: endpoint@11 {
+										status = "okay";
+										remote-endpoint = <&gmslcomm_vi_in5>;
+									};
+								};
+							};
+						};
+						channel@6 {
+							reg = <6>;
+							status = "okay";
+							ports {
+								status = "okay";
+								port@0 {
+									status = "okay";
+									reg = <0>;
+									gmslcomm_csi_in6: endpoint@12 {
+										status = "okay";
+										port-index = <6>;
+										bus-width = <4>;
+										remote-endpoint = <&gmslcomm_des_out6>;
+									};
+								};
+								port@1 {
+									status = "okay";
+									reg = <1>;
+									gmslcomm_csi_out6: endpoint@13 {
+										status = "okay";
+										remote-endpoint = <&gmslcomm_vi_in6>;
+									};
+								};
+							};
+						};
+						channel@7 {
+							reg = <7>;
+							status = "okay";
+							ports {
+								status = "okay";
+
+								port@0 {
+									reg = <0>;
+									status = "okay";
+									gmslcomm_csi_in7: endpoint@14 {
+										status = "okay";
+										port-index = <6>;
+										bus-width = <4>;
+										remote-endpoint = <&gmslcomm_des_out7>;
+									};
+								};
+								port@1 {
+									reg = <1>;
+									status = "okay";
+									gmslcomm_csi_out7: endpoint@15 {
+										status = "okay";
+										remote-endpoint = <&gmslcomm_vi_in7>;
+									};
+								};
+							};
+						};
+					};
+				};
+				i2c@3180000 {
+					status = "okay";
+					#address-cells = <1>;
+					#size-cells = <0>;
+					tca9546@70 {
+						status = "okay";
+						compatible = "nxp,pca9546";
+						reg = <0x70>;
+						vcc-supply = <&vdd_1v8_ls>;
+						force_bus_start = <CAMERA_I2C_MUX_BUS(0)>;
+						#address-cells = <1>;
+						#size-cells = <0>;
+						i2c-mux-idle-disconnect;
+						skip_mux_detect = "yes";
+						i2c@0 {
+							reg = <0>;
+							i2c-mux,deselect-on-exit;
+							#address-cells = <1>;
+							#size-cells = <0>;
+							status = "okay";
+							max9296_0_porta:gmslcomm_a@4 {
+								compatible = "ailiteam,alg-max9296";
+								status = "okay";
+								reg = <0x4>;
+								addr_reg = <0x48>;// i2c地址
+								subdev_name = "m00_b_MAX9296A";// V4l2子设备 名字，用于SDK检索
+								reset-gpios = <&gpio CAM0_RST_L GPIO_ACTIVE_LOW>;	// 复位引脚
+								camera-gpios = <&gpio CAM0_PWDN GPIO_ACTIVE_LOW>;	// 电源引脚
+								companion_device = <&max9296_0_portb>;// 伴生设备
+								mode0 {
+									mclk_khz = "24000";
+									num_lanes = "4";
+									tegra_sinterface = "serial_e";
+									vc_id = "1";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									pixel_t = "yuv_uyvy16";
+									active_w = "1920";
+									active_h = "1536";
+									readout_orientation = "0";
+									line_length = "2200";
+									inherent_gain = "1";
+									pix_clk_hz = "74250000";
+									serdes_pix_clk_hz = "400000000";
+									
+									gain_factor = "10";
+									min_gain_val = "0"; /* dB */
+									max_gain_val = "300"; /* dB */
+									step_gain_val = "3"; /* 0.3 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "1";
+									framerate_factor = "1000000";
+									min_framerate = "30000000";
+									max_framerate = "30000000";
+									step_framerate = "1";
+									default_framerate = "30000000";
+									exposure_factor = "1000000";
+									min_exp_time = "59"; /*us, 2 lines*/
+									max_exp_time = "33333";
+									step_exp_time = "1";
+									default_exp_time = "33333";/* us */
+									embedded_metadata_height = "0";
+								};
+								ports {
+									status = "okay";
+									port@0 {
+										status = "okay";
+										gmslcomm_des_out0: endpoint {
+											status = "okay";
+											vc-id = <1>;
+											port-index = <0>;
+											bus-width = <4>;
+											remote-endpoint = <&gmslcomm_csi_in0>;
+										};
+									};
+								};
+							};
+							max9296_0_portb:gmslcomm_b@5 {
+								compatible = "ailiteam,alg-max9296";
+								status = "okay";
+								reg = <0x5>;
+								addr_reg = <0x48>;// i2c地址
+								subdev_name = "m01_b_MAX9296A";// V4l2子设备 名字，用于SDK检索
+								reset-gpios = <&gpio CAM0_RST_L GPIO_ACTIVE_LOW>;	// 复位引脚
+								camera-gpios = <&gpio CAM0_PWDN GPIO_ACTIVE_LOW>;	// 电源引脚
+								companion_device = <&max9296_0_porta>;// 伴生设备
+								mode0 {
+									mclk_khz = "24000";
+									num_lanes = "4";
+									tegra_sinterface = "serial_e";
+									vc_id = "0";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									pixel_t = "yuv_uyvy16";
+									active_w = "1920";
+									active_h = "1536";
+									readout_orientation = "0";
+									line_length = "2200";
+									inherent_gain = "1";
+									pix_clk_hz = "74250000";
+									serdes_pix_clk_hz = "400000000";
+									
+									gain_factor = "10";
+									min_gain_val = "0"; /* dB */
+									max_gain_val = "300"; /* dB */
+									step_gain_val = "3"; /* 0.3 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "1";
+									framerate_factor = "1000000";
+									min_framerate = "30000000";
+									max_framerate = "30000000";
+									step_framerate = "1";
+									default_framerate = "30000000";
+									exposure_factor = "1000000";
+									min_exp_time = "59"; /*us, 2 lines*/
+									max_exp_time = "33333";
+									step_exp_time = "1";
+									default_exp_time = "33333";/* us */
+									embedded_metadata_height = "0";
+								};
+								ports {
+									status = "okay";
+									port@0 {
+										status = "okay";
+										gmslcomm_des_out1: endpoint {
+											status = "okay";
+											vc-id = <0>;
+											port-index = <0>;
+											bus-width = <4>;
+											remote-endpoint = <&gmslcomm_csi_in1>;
+										};
+									};
+								};
+							};
+						};
+						i2c@1 {
+							reg = <1>;
+							i2c-mux,deselect-on-exit;
+							#address-cells = <1>;
+							#size-cells = <0>;
+							status = "okay";
+							max9296_1_porta:gmslcomm_a@6 {
+								compatible = "ailiteam,alg-max9296";
+								status = "okay";
+								reg = <0x6>;
+								addr_reg = <0x48>;// i2c地址
+								subdev_name = "m02_b_MAX9296A";// V4l2子设备 名字，用于SDK检索
+								reset-gpios = <&gpio CAM1_RST_L GPIO_ACTIVE_LOW>;	// 复位引脚
+								camera-gpios = <&gpio CAM1_PWDN GPIO_ACTIVE_LOW>;	// 电源引脚
+								companion_device = <&max9296_1_portb>;// 伴生设备
+								mode0 {
+									mclk_khz = "24000";
+									num_lanes = "4";
+									tegra_sinterface = "serial_e";
+									vc_id = "1";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									pixel_t = "yuv_uyvy16";
+									active_w = "1920";
+									active_h = "1536";
+									readout_orientation = "0";
+									line_length = "2200";
+									inherent_gain = "1";
+									pix_clk_hz = "74250000";
+									serdes_pix_clk_hz = "400000000";
+									
+									gain_factor = "10";
+									min_gain_val = "0"; /* dB */
+									max_gain_val = "300"; /* dB */
+									step_gain_val = "3"; /* 0.3 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "1";
+									framerate_factor = "1000000";
+									min_framerate = "30000000";
+									max_framerate = "30000000";
+									step_framerate = "1";
+									default_framerate = "30000000";
+									exposure_factor = "1000000";
+									min_exp_time = "59"; /*us, 2 lines*/
+									max_exp_time = "33333";
+									step_exp_time = "1";
+									default_exp_time = "33333";/* us */
+									embedded_metadata_height = "0";
+								};
+								ports {
+									status = "okay";
+									port@0 {
+										status = "okay";
+										gmslcomm_des_out2: endpoint {
+											status = "okay";
+											vc-id = <1>;
+											port-index = <2>;
+											bus-width = <4>;
+											remote-endpoint = <&gmslcomm_csi_in2>;
+										};
+									};
+								};
+							};
+							max9296_1_portb:gmslcomm_b@7 {
+								compatible = "ailiteam,alg-max9296";
+								status = "okay";
+								reg = <0x7>;
+								addr_reg = <0x48>;// i2c地址
+								subdev_name = "m03_b_MAX9296A";// V4l2子设备 名字，用于SDK检索
+								reset-gpios = <&gpio CAM1_RST_L GPIO_ACTIVE_LOW>;	// 复位引脚
+								camera-gpios = <&gpio CAM1_PWDN GPIO_ACTIVE_LOW>;	// 电源引脚
+								companion_device = <&max9296_1_porta>;// 伴生设备
+								mode0 {
+									mclk_khz = "24000";
+									num_lanes = "4";
+									tegra_sinterface = "serial_e";
+									vc_id = "0";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									pixel_t = "yuv_uyvy16";
+									active_w = "1920";
+									active_h = "1536";
+									readout_orientation = "0";
+									line_length = "2200";
+									inherent_gain = "1";
+									pix_clk_hz = "74250000";
+									serdes_pix_clk_hz = "400000000";
+									
+									gain_factor = "10";
+									min_gain_val = "0"; /* dB */
+									max_gain_val = "300"; /* dB */
+									step_gain_val = "3"; /* 0.3 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "1";
+									framerate_factor = "1000000";
+									min_framerate = "30000000";
+									max_framerate = "30000000";
+									step_framerate = "1";
+									default_framerate = "30000000";
+									exposure_factor = "1000000";
+									min_exp_time = "59"; /*us, 2 lines*/
+									max_exp_time = "33333";
+									step_exp_time = "1";
+									default_exp_time = "33333";/* us */
+									embedded_metadata_height = "0";
+								};
+								ports {
+									status = "okay";
+									port@0 {
+										status = "okay";
+										gmslcomm_des_out3: endpoint {
+											status = "okay";
+											vc-id = <0>;
+											port-index = <2>;
+											bus-width = <4>;
+											remote-endpoint = <&gmslcomm_csi_in3>;
+										};
+									};
+								};
+							};
+						};
+						i2c@2 {
+							reg = <2>;
+							i2c-mux,deselect-on-exit;
+							#address-cells = <1>;
+							#size-cells = <0>;
+							status = "okay";
+							max9296_2_porta:gmslcomm_a@8 {
+								compatible = "ailiteam,alg-max9296";
+								status = "okay";
+								reg = <0x8>;
+								addr_reg = <0x48>;// i2c地址
+								subdev_name = "m04_b_MAX9296A";// V4l2子设备 名字，用于SDK检索
+								reset-gpios = <&gpio_aon CAM2_RST_L GPIO_ACTIVE_LOW>;	// 复位引脚
+								camera-gpios = <&gpio_aon CAM2_PWDN GPIO_ACTIVE_LOW>;	// 电源引脚
+								companion_device = <&max9296_2_portb>;// 伴生设备
+								mode0 {
+									mclk_khz = "24000";
+									num_lanes = "4";
+									tegra_sinterface = "serial_e";
+									vc_id = "1";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									pixel_t = "yuv_uyvy16";
+									active_w = "1920";
+									active_h = "1536";
+									readout_orientation = "0";
+									line_length = "2200";
+									inherent_gain = "1";
+									pix_clk_hz = "74250000";
+									serdes_pix_clk_hz = "400000000";
+									
+									gain_factor = "10";
+									min_gain_val = "0"; /* dB */
+									max_gain_val = "300"; /* dB */
+									step_gain_val = "3"; /* 0.3 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "1";
+									framerate_factor = "1000000";
+									min_framerate = "30000000";
+									max_framerate = "30000000";
+									step_framerate = "1";
+									default_framerate = "30000000";
+									exposure_factor = "1000000";
+									min_exp_time = "59"; /*us, 2 lines*/
+									max_exp_time = "33333";
+									step_exp_time = "1";
+									default_exp_time = "33333";/* us */
+									embedded_metadata_height = "0";
+								};
+								ports {
+									status = "okay";
+									port@0 {
+										status = "okay";
+										gmslcomm_des_out4: endpoint {
+											status = "okay";
+											vc-id = <1>;
+											port-index = <4>;
+											bus-width = <4>;
+											remote-endpoint = <&gmslcomm_csi_in4>;
+										};
+									};
+								};
+							};
+							max9296_2_portb:gmslcomm_b@9 {
+								compatible = "ailiteam,alg-max9296";
+								status = "okay";
+								reg = <0x9>;
+								addr_reg = <0x48>;// i2c地址
+								subdev_name = "m05_b_MAX9296A";// V4l2子设备 名字，用于SDK检索
+								reset-gpios = <&gpio_aon CAM2_RST_L GPIO_ACTIVE_LOW>;	// 复位引脚
+								camera-gpios = <&gpio_aon CAM2_PWDN GPIO_ACTIVE_LOW>;	// 电源引脚
+								companion_device = <&max9296_2_porta>;// 伴生设备
+								mode0 {
+									mclk_khz = "24000";
+									num_lanes = "4";
+									tegra_sinterface = "serial_e";
+									vc_id = "0";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									pixel_t = "yuv_uyvy16";
+									active_w = "1920";
+									active_h = "1536";
+									readout_orientation = "0";
+									line_length = "2200";
+									inherent_gain = "1";
+									pix_clk_hz = "74250000";
+									serdes_pix_clk_hz = "400000000";
+									
+									gain_factor = "10";
+									min_gain_val = "0"; /* dB */
+									max_gain_val = "300"; /* dB */
+									step_gain_val = "3"; /* 0.3 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "1";
+									framerate_factor = "1000000";
+									min_framerate = "30000000";
+									max_framerate = "30000000";
+									step_framerate = "1";
+									default_framerate = "30000000";
+									exposure_factor = "1000000";
+									min_exp_time = "59"; /*us, 2 lines*/
+									max_exp_time = "33333";
+									step_exp_time = "1";
+									default_exp_time = "33333";/* us */
+									embedded_metadata_height = "0";
+								};
+								ports {
+									status = "okay";
+									port@0 {
+										status = "okay";
+										gmslcomm_des_out5: endpoint {
+											status = "okay";
+											vc-id = <0>;
+											port-index = <4>;
+											bus-width = <4>;
+											remote-endpoint = <&gmslcomm_csi_in5>;
+										};
+									};
+								};
+							};
+						};
+						i2c@3 {
+							reg = <3>;
+							i2c-mux,deselect-on-exit;
+							#address-cells = <1>;
+							#size-cells = <0>;
+							status = "okay";
+							max9296_3_porta:gmslcomm_a@10 {
+								compatible = "ailiteam,alg-max9296";
+								status = "okay";
+								reg = <10>;
+								addr_reg = <0x48>;// i2c地址
+								subdev_name = "m06_b_MAX9296A";// V4l2子设备 名字，用于SDK检索
+								reset-gpios = <&gpio_aon CAM3_RST_L GPIO_ACTIVE_LOW>;	// 复位引脚
+								camera-gpios = <&gpio_aon CAM3_PWDN GPIO_ACTIVE_LOW>;	// 电源引脚
+								companion_device = <&max9296_3_portb>;// 伴生设备
+								mode0 {
+									mclk_khz = "24000";
+									num_lanes = "4";
+									tegra_sinterface = "serial_e";
+									vc_id = "1";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									pixel_t = "yuv_uyvy16";
+									active_w = "1920";
+									active_h = "1536";
+									readout_orientation = "0";
+									line_length = "2200";
+									inherent_gain = "1";
+									pix_clk_hz = "74250000";
+									serdes_pix_clk_hz = "400000000";
+									
+									gain_factor = "10";
+									min_gain_val = "0"; /* dB */
+									max_gain_val = "300"; /* dB */
+									step_gain_val = "3"; /* 0.3 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "1";
+									framerate_factor = "1000000";
+									min_framerate = "30000000";
+									max_framerate = "30000000";
+									step_framerate = "1";
+									default_framerate = "30000000";
+									exposure_factor = "1000000";
+									min_exp_time = "59"; /*us, 2 lines*/
+									max_exp_time = "33333";
+									step_exp_time = "1";
+									default_exp_time = "33333";/* us */
+									embedded_metadata_height = "0";
+								};
+								ports {
+									status = "okay";
+									port@0 {
+										status = "okay";
+										gmslcomm_des_out6: endpoint {
+											status = "okay";
+											vc-id = <1>;
+											port-index = <6>;
+											bus-width = <4>;
+											remote-endpoint = <&gmslcomm_csi_in6>;
+										};
+									};
+								};
+							};
+							max9296_3_portb:gmslcomm_b@11 {
+								compatible = "ailiteam,alg-max9296";
+								status = "okay";
+								reg = <11>;
+								addr_reg = <0x48>;// i2c地址
+								subdev_name = "m07_b_MAX9296A";// V4l2子设备 名字，用于SDK检索
+								reset-gpios = <&gpio_aon CAM3_RST_L GPIO_ACTIVE_LOW>;	// 复位引脚
+								camera-gpios = <&gpio_aon CAM3_PWDN GPIO_ACTIVE_LOW>;	// 电源引脚
+								companion_device = <&max9296_3_porta>;// 伴生设备
+								mode0 {
+									mclk_khz = "24000";
+									num_lanes = "4";
+									tegra_sinterface = "serial_e";
+									vc_id = "0";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									pixel_t = "yuv_uyvy16";
+									active_w = "1920";
+									active_h = "1536";
+									readout_orientation = "0";
+									line_length = "2200";
+									inherent_gain = "1";
+									pix_clk_hz = "74250000";
+									serdes_pix_clk_hz = "400000000";
+									
+									gain_factor = "10";
+									min_gain_val = "0"; /* dB */
+									max_gain_val = "300"; /* dB */
+									step_gain_val = "3"; /* 0.3 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "1";
+									framerate_factor = "1000000";
+									min_framerate = "30000000";
+									max_framerate = "30000000";
+									step_framerate = "1";
+									default_framerate = "30000000";
+									exposure_factor = "1000000";
+									min_exp_time = "59"; /*us, 2 lines*/
+									max_exp_time = "33333";
+									step_exp_time = "1";
+									default_exp_time = "33333";/* us */
+									embedded_metadata_height = "0";
+								};
+								ports {
+									status = "okay";
+									port@0 {
+										status = "okay";
+										gmslcomm_des_out7: endpoint {
+											status = "okay";
+											vc-id = <0>;
+											port-index = <6>;
+											bus-width = <4>;
+											remote-endpoint = <&gmslcomm_csi_in7>;
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+
+			tegra-camera-platform {
+				compatible = "nvidia, tegra-camera-platform";
+				num_csi_lanes = <16>;
+				max_lane_speed = <2500000>;
+				min_bits_per_pixel = <10>;
+				vi_peak_byte_per_pixel = <2>;
+				vi_bw_margin_pct = <25>;
+				isp_peak_byte_per_pixel = <5>;
+				isp_bw_margin_pct = <25>;
+				modules {
+					status = "okay";
+					module0 {
+						badge = "max9296_bottomleft";
+						position = "bottomleft";
+						orientation = "1";
+						status = "okay";
+						drivernode0 {
+							status = "okay";
+							/* Declare PCL support driver (classically known as guid) */
+							pcl_id = "v4l2_sensor";
+							/* Declare the device-tree hierarchy to driver instance */
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@3180000/tca9546@70/i2c@0/gmslcomm_a@4";
+						};
+					};
+					module1 {
+						status = "okay";
+						badge = "max9296_bottomright";
+						position = "bottomright";
+						orientation = "1";
+						drivernode0 {
+							status = "okay";
+							/* Declare PCL support driver (classically known as guid)  */
+							pcl_id = "v4l2_sensor";
+							/* Declare the device-tree hierarchy to driver instance */
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@3180000/tca9546@70/i2c@0/gmslcomm_b@5";
+						};
+					};
+					module2 {
+						badge = "max9296_centerleft";
+						position = "centerleft";
+						orientation = "1";
+						status = "okay";
+						drivernode0 {
+							status = "okay";
+							/* Declare PCL support driver (classically known as guid) */
+							pcl_id = "v4l2_sensor";
+							/* Declare the device-tree hierarchy to driver instance */
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@3180000/tca9546@70/i2c@1/gmslcomm_a@6";
+						};
+					};
+					module3 {
+						status = "okay";
+						badge = "max9296_centerright";
+						position = "centerright";
+						orientation = "1";
+						drivernode0 {
+							status = "okay";
+							/* Declare PCL support driver (classically known as guid)  */
+							pcl_id = "v4l2_sensor";
+							/* Declare the device-tree hierarchy to driver instance */
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@3180000/tca9546@70/i2c@1/gmslcomm_b@7";
+						};
+					};
+					module4 {
+						badge = "max9296_topleft";
+						position = "topleft";
+						orientation = "1";
+						status = "okay";
+						drivernode0 {
+							status = "okay";
+							/* Declare PCL support driver (classically known as guid) */
+							pcl_id = "v4l2_sensor";
+							/* Declare the device-tree hierarchy to driver instance */
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@3180000/tca9543@73/i2c@2/gmslcomm_a@8";
+						};
+					};
+					module5 {
+						status = "okay";
+						badge = "max9296_topright";
+						position = "topright";
+						orientation = "1";
+						drivernode0 {
+							status = "okay";
+							/* Declare PCL support driver (classically known as guid)  */
+							pcl_id = "v4l2_sensor";
+							/* Declare the device-tree hierarchy to driver instance */
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@3180000/tca9543@73/i2c@2/gmslcomm_b@9";
+						};
+					};
+					module6 {
+						badge = "max9296_rear";
+						position = "rear";
+						orientation = "1";
+						status = "okay";
+						drivernode0 {
+							status = "okay";
+							/* Declare PCL support driver (classically known as guid) */
+							pcl_id = "v4l2_sensor";
+							/* Declare the device-tree hierarchy to driver instance */
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@3180000/tca9543@73/i2c@3/gmslcomm_a@10";
+						};
+					};
+					module7 {
+						status = "okay";
+						badge = "max9296_front";
+						position = "front";
+						orientation = "1";
+						drivernode0 {
+							status = "okay";
+							/* Declare PCL support driver (classically known as guid)  */
+							pcl_id = "v4l2_sensor";
+							/* Declare the device-tree hierarchy to driver instance */
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@3180000/tca9543@73/i2c@3/gmslcomm_b@11";
+						};
+					};
+				};
+			};
+
+		};
+	};
+
+
+	// p3737-0000_p3701-0000-csi@1 {
+    //     target = <&pinmux>;
+    //     __overlay__ {
+    //         pinctrl-names = "default";
+	// 		pinctrl-0 = <&jetson_io_pinmux>;
+	// 		jetson_io_pinmux: exp-header-pinmux{
+	// // 			// 原始功能：CAM_ERROR1 spi5_cs0_pac3 -> trigger_out1
+	// // 			csi-pin76c {
+	// // 				nvidia,pins = "spi5_cs0_pac3";
+	// // 				nvidia,function = "rsvd3";
+	// // 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// // 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// // 			};
+	// // 			// 原始功能：CAM_ERROR2 soc_gpio22_ph1 -> trigger_out3
+	// // 			csi-pin78 {
+	// // 				nvidia,pins = "soc_gpio22_ph1";
+	// // 				nvidia,function = "rsvd0";
+	// // 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// // 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// // 			};
+	// // 			// 原始功能：CAM_ERROR3 soc_gpio57_pac4 -> trigger_out5
+	// // 			csi-pin84 {
+	// // 				nvidia,pins = "soc_gpio57_pac4";
+	// // 				nvidia,function = "rsvd0";
+	// // 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// // 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// // 			};
+	// // 			// 原始功能：CAM_FRSYNC4 spi5_mosi_pac2 -> trigger_out6
+	// // 			csi-pin96c {
+	// // 				nvidia,pins = "spi5_mosi_pac2";
+	// // 				nvidia,function = "rsvd3";
+	// // 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// // 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// // 			};
+	// // 			// 原始功能：CAM_ERROR4 uart4_rts_ph5 -> trigger_out7
+	// // 			csi-pin86 {
+	// // 				nvidia,pins = "uart4_rts_ph5";
+	// // 				nvidia,function = "rsvd2";
+	// // 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// // 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// // 			};
+	// // 			// 原來 CAM0_RST pin 95  現在CAM0_RST_L
+	// // 			csi-pin95 {
+	// // 				nvidia,pins = "uart4_tx_ph3";
+	// // 				nvidia,function = "rsvd2";
+	// // 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// // 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// // 			};
+	// // 			// 原來 CAM0_PWDN pin 93 現在CAM0_PWDN
+	// // 			csi-pin93 {
+	// // 				nvidia,pins = "uart4_cts_ph6";
+	// // 				nvidia,function = "rsvd1";
+	// // 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// // 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// // 			};
+	// // 			// 原來的CAM1_RST 連接器pin:92 原來的CAM1_RST
+	// // 			csi-pin92c {
+	// // 				nvidia,pins = "spi5_miso_pac1";
+	// // 				nvidia,function = "rsvd3";
+	// // 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// // 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// // 			};
+	// // 			// 原來的CAM1_PWDN 連接器pin:90 原來的CAM1_PWDN
+	// // 			csi-pin90c {
+	// // 				nvidia,pins = "spi5_sck_pac0";
+	// // 				nvidia,function = "rsvd3";
+	// // 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// // 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// // 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// // 			};
+	// // 			// // 原來的CAM_VDD_SYS_EN pin 119 現在EXTERN TRIG
+	// // 			// csi-pin119 {
+	// // 			// 	nvidia,pins = "soc_gpio60_pac7";
+	// // 			// 	nvidia,function = "rsvd0";
+	// // 			// 	nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// // 			// 	nvidia,tristate = <TEGRA_PIN_ENABLE>;
+	// // 			// 	nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+	// // 			// 	nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// // 			// };
+	// 		};
+    //     };
+    // };
+
+	// fragment@2 {
+	// 	target = <&pinmux_aon>;
+	// 	__overlay__ {
+	// 		pinctrl-names = "default";
+	// 		pinctrl-0 = <&jetson_io_pinmux_aon>;
+	// 		jetson_io_pinmux_aon: exp-header-pinmux 
+	// 		{
+	// 			// // 原始功能：CAM_FRSYNC1 soc_gpio50_pbb2 -> trigger_out0
+	// 			// csi-pin85 {
+	// 			// 	nvidia,pins = "soc_gpio50_pbb2";
+	// 			// 	nvidia,function = "rsvd0";
+	// 			// 	nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// 			// 	nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// 			// 	nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// 			// };
+	// 			// 原始功能：CAM_FRSYNC3 can0_stb_paa4 -> trigger_out4
+	// 			// csi-pin97 {
+	// 			// 	nvidia,pins = "can0_stb_paa4";
+	// 			// 	nvidia,function = "rsvd0";
+	// 			// 	nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// 			// 	nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// 			// 	nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// 			// };
+	// 			// // 原始功能：CAM_FRSYNC2   can0_err_paa7 -> trigger_out2
+	// 			// csi-pin98 {
+	// 			// 	nvidia,pins = "can0_err_paa7";
+	// 			// 	nvidia,function = "rsvd0";
+	// 			// 	nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// 			// 	nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// 			// 	nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// 			// };
+	// 			// 原來的INT3 pin103 spi2_mosi_pcc2 現在CAM2_RST_L
+	// 			csi-pin103 {
+	// 				nvidia,pins = "spi2_mosi_pcc2";
+	// 				nvidia,function = "rsvd1";
+	// 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,io-high-voltage = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// 			};
+	// 			// 原來的INT4 pin104 spi2_cs0_pcc3 現在CAM3_RST_L
+	// 			csi-pin104 {
+	// 				nvidia,pins = "spi2_cs0_pcc3";
+	// 				nvidia,function = "rsvd1";
+	// 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,io-high-voltage = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// 			};
+	// 			// 原來的INT2 pin 106 spi2_miso_pcc1 現在CAM3_PWDN
+	// 			csi-pin106 {
+	// 				nvidia,pins = "spi2_miso_pcc1";
+	// 				nvidia,function = "rsvd1";
+	// 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,io-high-voltage = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// 			};
+	// 			// 原來的INT1 pin 117 spi2_sck_pcc0 現在CAM2_PWDN
+	// 			csi-pin117 {
+	// 				nvidia,pins = "spi2_sck_pcc0";
+	// 				nvidia,function = "rsvd1";
+	// 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+	// 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,io-high-voltage = <TEGRA_PIN_DISABLE>;
+	// 				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+	// 			};
+	// 		};
+	// 	};
+	// };
+};
