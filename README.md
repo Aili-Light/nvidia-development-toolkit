@@ -1,5 +1,5 @@
 # GMSL Camera Adapter Kit Driver for NVIDIA Platform
-====================================  
+
 This repository provides ALG-Tech's GMSL camera driver framework for the NVIDIA Jetson AGX Orin platform. The driver is only compatible with ALG-Tech's GMSL camera adapter board. [中文](./README_CN.md)
 
 For more information check the [website](https://www.alg-imaging.com)
@@ -44,11 +44,11 @@ Verify the information by using `jtop` command on your device.
 3. Connect power cable to the power port(12V) of main board.  
 4. Connect GMSL cameras to the Fakra connector on sub board (maximum 4-CH per board).  
 
-## Hardware setup as displayed in thefollowing image  
+## Hardware setup as displayed in the following image  
 ![hardware setup(back)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-4.png)
 ![hardware setup(top)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-5.png)
 
-## Camera Driver
+# Camera Driver
 Please refer to [Driver](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/README.md) for specific descriptions.
 
 # Support

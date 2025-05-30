@@ -1,5 +1,5 @@
 # NVIDIA JETSON AGX ORIN Camera Driver Framework
-====================================
+
 The ALG's camera driver framework for NVIDIA Jetson AGX Orin platform. 
 
 ## 1. File Descriptions
@@ -23,7 +23,7 @@ The ALG's camera driver framework for NVIDIA Jetson AGX Orin platform.
 ```
 
 
-## 2.System flash and configurepin mux
+## 2. Flash system and change pinmux
 
 Flash the jeston linux system to version <r36.4.3> according to the official instruction. 
 ​	https://docs.nvidia.com/jetson/archives/r36.4.3/DeveloperGuide/IN/QuickStart.html#preparing-a-jetson-developer-kit-for-use

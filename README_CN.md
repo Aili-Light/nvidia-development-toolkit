@@ -1,5 +1,5 @@
 # 艾利光相机通用驱动使用说明
-====================================  
+
 本目录提供艾利光专为NVIDIA Jetson AGX Orin平台开发的摄像头通用驱动框架。此驱动框架仅适用于艾利光科技的GMSL转接套件。
 
 详细信息请查阅网站：[website](https://www.aili-light.com)
@@ -45,7 +45,7 @@
 ![hardware setup(back)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-4.png)
 ![hardware setup(top)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/image-5.png)
 
-## 驱动框架
+# 驱动框架
 驱动框架详细信息，请查阅页面[Driver](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/README_CN.md).
 
 # 技术支持
