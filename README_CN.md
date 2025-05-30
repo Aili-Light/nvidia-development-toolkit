@@ -15,6 +15,36 @@
 
 ![image-20250418194318082](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/pic/pic7.png)
 
+
+# 前置条件
+1. GMSL摄像头模组(https://www.aili-light.com/alg-automotive-camera/3MP-camera-modules.html)  
+
+2. 转接板(https://www.aili-light.com/products_46/142.html)  
+
+# 硬件设置
+## 准备硬件  
+1. NVIDIA Jetson AGX ORIN 官方开发套件  
+2. 12V电源适配器  
+3. 艾利光GMSL转接套件
+4. 艾利光GMSL摄像头模组（3MP/8MP） 
+
+## Jetson Orin转接套件说明
+1. 主板  
+![main board front](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/pic/images/image-1.png)
+![main board back](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/pic/images/image-2.png)
+
+2. 子板  
+![sub board](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/pic/images/image.png)
+## 安装说明
+1. 将主板反扣在Jetson Orin背面的连接器上。  
+2. 将主板和子板通过两条FPC软排线连接。  
+3. 将12V电源连接在主板上。  
+4. 将相机接入到子板的Fakra接口（每个子板最多4通道）。  
+
+## 整体硬件设置图示 
+![hardware setup(back)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/pic/images/image-4.png)
+![hardware setup(top)](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/pic/images/image-5.png)
+
 ## 驱动框架
 驱动框架详细信息，请查阅页面[Driver](./NVIDIA_AGX_ORIN_ALG_CAM_COMM_8CH/doc/README_CN.md).
 
